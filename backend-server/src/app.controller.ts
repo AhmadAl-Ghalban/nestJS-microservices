@@ -17,4 +17,13 @@ export class AppController {
   createUser(@Body() data:any): any {
     return this.appService.createUser(data);
   }
+  @Post('products')
+  async createProduct(@Body() dto: any) {
+    return this.appService.createProduct(dto);
+  }
+
+  @Get('products')
+  async getAllProducts() {
+    return this.appService.getAllProducts();
+  }
 }

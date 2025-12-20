@@ -8,17 +8,22 @@ import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
-  imports: [MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/products'), ProductModule,ConfigModule.forRoot({ isGlobal: true }),
+  imports: [
+    MongooseModule.forRoot(
+      process.env.MONGO_URI || 'mongodb://localhost:27017/products',
+    ),
+    ProductModule,
+    ConfigModule.forRoot({ isGlobal: true }),
     ClientsModule.register([
- {
+      {
         name: 'USER_SERVICE',
         transport: Transport.TCP, // Transport.TCP
         options: {
           host: 'localhost',
           port: 3002,
         },
-      }, 
-    ])
+      },
+    ]),
   ],
   controllers: [AppController, ProductController],
   providers: [AppService],

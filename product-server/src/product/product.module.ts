@@ -6,17 +6,19 @@ import { ProductController } from './product.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
-  ClientsModule.register([
- {
+  imports: [
+    MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
+    ClientsModule.register([
+      {
         name: 'USER_SERVICE',
         transport: Transport.TCP, // Transport.TCP
         options: {
           host: 'localhost',
           port: 3002,
         },
-      }, 
-    ])],
+      },
+    ]),
+  ],
   providers: [ProductService],
   controllers: [ProductController],
   exports: [ProductService],

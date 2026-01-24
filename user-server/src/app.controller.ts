@@ -1,6 +1,7 @@
 import { Body, Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { EventPattern, MessagePattern } from '@nestjs/microservices';
+import { log } from 'console';
 
 @Controller()
 export class AppController {

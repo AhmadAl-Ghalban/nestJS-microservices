@@ -14,6 +14,22 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           port: 3002,
         },
       },
+      {
+        name: 'PRODUCT_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://guest:guest@localhost:5672'],
+          queue: 'products_rpc',
+          queueOptions: {
+            durable: false,
+          },
+          noAck: true,
+          // socketOptions: {
+          //   heartbeatIntervalInSeconds: 60,
+          //   reconnectTimeInSeconds: 5,
+          // },
+        },
+      },
     ]),
   ],
   controllers: [AppController],

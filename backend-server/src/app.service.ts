@@ -1,11 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { userCreatedEvent } from './user-event';
+import { firstValueFrom, timeout } from 'rxjs';
 
 @Injectable()
 export class AppService {
   constructor(
     @Inject('USER_SERVICE') private readonly userService: ClientProxy,
+    @Inject('PRODUCT_SERVICE') private readonly productService: ClientProxy,
   ) {}
   getHello(): string {
     return 'Hello World!';
@@ -20,7 +22,18 @@ export class AppService {
   //   this.userService.emit('CREATE_USER', new userCreatedEvent(data)); // emit method for Event Pattern (Fire-and-Forget)
   // }
   createUser(data: any) {
-    console.log("🚀 ~ app.service.ts:23 ~ AppService ~ createUser ~ data:", data)
-   return this.userService.send({cmd:"CREATE_USER"},data); // emit method for Event Pattern (Fire-and-Forget)
+    return this.userService.send({ cmd: 'CREATE_USER' }, data); // emit method for Event Pattern (Fire-and-Forget)
+  }
+
+  createProduct(data: any) {
+    return firstValueFrom(
+      this.productService.send('product.create', data).pipe(timeout(5000)),
+    );
+  }
+
+  getAllProducts() {
+    return firstValueFrom(
+      this.productService.send('product.get_all_products', {}).pipe(timeout(100000)),
+    );
   }
 }
